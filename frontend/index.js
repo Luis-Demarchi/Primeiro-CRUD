@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchUsers();
 });
 
-function fetchUsers() {
+function fetchUsers(searchTerm = '') {
     fetch('http://localhost:3000/users')
     .then(response => response.json())
     .then(data => {
@@ -52,7 +52,7 @@ function fetchUsers() {
         thead.innerHTML = `
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Nome</th>
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
@@ -61,28 +61,45 @@ function fetchUsers() {
 
         const tbody = document.createElement('tbody');
 
-        data.forEach(user => {
+        let filteredUsers = data;
+
+        if (searchTerm.trim() !== '') {
+            filteredUsers = data.filter(user =>
+                user.id.toString().includes(searchTerm) ||
+                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        filteredUsers.forEach(user => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${user.id}</td>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>
-                    <button onclick="editUser(${user.id}, '${user.name}', '${user.email}')">Edit</button>
-                    <button onclick="deleteUser(${user.id})">Delete</button>
+                    <button onclick="editUser(${user.id}, '${user.name}', '${user.email}')">Editar</button>
+                    <button onclick="deleteUser(${user.id})">Excluir</button>
                 </td>
             `;
 
-        tr.addEventListener('click', function() {
-            selectRow(this, user.id,user.name, user.email);
-        });
-
-        tbody.appendChild(tr);
-
+            tbody.appendChild(tr);
         });
 
         usersTable.appendChild(tbody);
-    });
+    })
+    .catch(error => console.error("Erro ao buscar usuários:", error));
+}
+
+document.getElementById('searchInput').addEventListener('input', function(){
+    const searchTerm = this.value;
+    fetchUsers(searchTerm);
+})
+
+
+function filterUsers() {
+    const searchTerm = document.getElementById('searchInput').value;
+    fetchUsers(searchTerm);
 }
 
 function deleteUser(id) {
