@@ -22,6 +22,7 @@ document.getElementById('singupForm').addEventListener('submit', function(event)
             notification.classList.add('success');
             notification.classList.remove('error');
             notification.textContent = data.message;
+            fetchUsers();
         } else {
             notification.classList.add('error');
             notification.classList.remove('success');
@@ -93,7 +94,23 @@ function deleteUser(id) {
     })
     .then(response => response.json())
     .then(data=>{
-        alert(data.message);
+        const notification = document.getElementById('notification');
+        if (data.status === 'sucesso') {
+            notification.classList.add('success');
+            notification.classList.remove('error');
+            notification.textContent = data.message;
+        } else {
+            notification.classList.add('error');
+            notification.classList.remove('success');
+            notification.textContent = data.message;
+        }
+
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 5000);
+
         fetchUsers();
     })
     .catch(error => {
