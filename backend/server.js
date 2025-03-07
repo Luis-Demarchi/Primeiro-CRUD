@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const bodyParser = require('body-parser');
 const { status } = require('express/lib/response');
+const { stat } = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -50,7 +51,7 @@ app.get('/users', async (req, res) => {
         res.json(users);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Erro ao buscar usuários'});
+        res.status(500).json({ status:'erro', message: 'Erro ao buscar usuários'});
     }
 });
 
@@ -59,14 +60,14 @@ app.patch('/users/:id', async (req, res) => {
     const { name, email, senha } = req.body;
 
     if (!name && !email && !senha) {
-        return res.status(400).json({ message: 'É necessário informar ao menos um campo para atualização'});
+        return res.status(400).json({ status: 'erro', message: 'É necessário informar ao menos um campo para atualização'});
     }
 
     try {
         const [user] = await promisePool.execute('SELECT * FROM users WHERE id = ?', [id]);
 
         if (user.length === 0) {
-            return res.status(404).json({ message: 'Usuário não encontrado'});
+            return res.status(404).json({ status:'erro', message: 'Usuário não encontrado'});
         }
 
         const userToUpdate = user[0];
@@ -79,10 +80,13 @@ app.patch('/users/:id', async (req, res) => {
 
         await promisePool.execute('UPDATE users SET name = ?, email = ?, senha = ? WHERE id = ?', [newUser.name, newUser.email, newUser.senha, id]);
 
-        res.json(newUser);
+        return res.json({
+            status: 'sucesso', message: 'User has been updated', data: newUser
+        });
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Erro ao atualizar usuário'});
+        res.status(500).json({ status:'erro', message: 'Erro ao atualizar usuário'});
     }
 });
 

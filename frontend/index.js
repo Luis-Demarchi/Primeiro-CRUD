@@ -52,8 +52,8 @@ function fetchUsers(searchTerm = '') {
         thead.innerHTML = `
             <tr>
                 <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
+                <th>Name</th>
+                <th>E-mail</th>
                 <th>Actions</th>
             </tr>
         `;
@@ -78,8 +78,8 @@ function fetchUsers(searchTerm = '') {
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>
-                    <button onclick="editUser(${user.id}, '${user.name}', '${user.email}')">Editar</button>
-                    <button onclick="deleteUser(${user.id})">Excluir</button>
+                    <button onclick="editUser(${user.id}, '${user.name}', '${user.email}', '${user.senha}')">Edit</button>
+                    <button onclick="deleteUser(${user.id})">Delete</button>
                 </td>
             `;
 
@@ -133,4 +133,60 @@ function deleteUser(id) {
     .catch(error => {
         console.error(error);
     });
+}
+
+function editUser(id, name, email, senha) {
+    document.getElementById('editUserId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editEmail').value = email;
+    document.getElementById('editSenha').value = senha;
+
+    document.getElementById('editFormContainer').style.display = 'block';
+}
+
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const id = document.getElementById('editUserId').value;
+    const name = document.getElementById('editName').value;
+    const email = document.getElementById('editEmail').value;
+    const senha = document.getElementById('editSenha').value;
+
+    const data = { name, email, senha };
+
+    fetch(`http://localhost:3000/users/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const notification = document.getElementById('editNotification');
+
+        if (data.status === 'sucesso') {
+            notification.classList.add('success');
+            notification.classList.remove('error');
+            notification.textContent = data.message;
+            fetchUsers();
+            document.getElementById('editFormContainer').style.display = 'none';
+        } else {
+            notification.classList.add('error');
+            notification.classList.remove('success');
+            notification.textContent = 'Erro ao editar usuário';
+        }
+
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 5000);
+    })
+    .catch(error => {
+        console.error('Erro ao editar usuário:', error);
+    });
+});
+
+function cancelEdit() {
+    document.getElementById('editFormContainer').style.display = 'none';
 }
