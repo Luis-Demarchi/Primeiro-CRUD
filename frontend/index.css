@@ -1,0 +1,73 @@
+/* Basic CSS reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set default font and background color */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Example of a class selector */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Example of an ID selector */
+#header {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Example of an element selector */
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Estilos gerais da notificação */
+/* Classe para notificação */
+.notification {
+    display: none; /* Inicialmente oculta */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out; /* Adicionando transição para suavizar a aparição e desaparecimento */
+}
+
+/* Classe para mostrar a notificação */
+.notification.show {
+    display: block; /* Torna a notificação visível */
+    opacity: 1;
+}
+
+/* Notificação de erro */
+.notification.error {
+    background-color: #f44336; /* Cor de fundo vermelha para erro */
+}
+
+/* Notificação de sucesso */
+.notification.success {
+    background-color: #4CAF50; /* Cor de fundo verde para sucesso */
+}
