@@ -86,19 +86,19 @@ app.patch('/users/:id', async (req, res) => {
     }
 });
 
-app.delete('/users', async (req, res) => {
-    const { email } = req.body;
+app.delete('/users/:id', async (req, res) => {
+    const { id } = req.params;
 
     try {
-        const [user] = await promisePool.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const [user] = await promisePool.execute('SELECT * FROM users WHERE id = ?', [id]);
 
         if (user.length === 0) {
-            return res.status(404).json({ status:'erro', message: 'E-mail não encontrado'});
+            return res.status(404).json({ status:'erro', message: 'E-mail not found'});
         }
 
-        await promisePool.execute('DELETE FROM users WHERE email = ?', [email]);
+        await promisePool.execute('DELETE FROM users WHERE id = ?', [id]);
 
-        return res.json({ status:'sucesso', message: 'Usuário removido com sucesso'});
+        return res.json({ status:'sucesso', message: 'User has been deleted'});
     } catch (error) {
         console.error(error);
         res.status(500).json({ status:'erro', message: 'Erro ao remover usuário'});

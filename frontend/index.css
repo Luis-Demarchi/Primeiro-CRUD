@@ -16,7 +16,7 @@ body {
 .container {
     width: 80%;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 25px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -24,6 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 25px;
 }
 
 /* Example of an ID selector */
