@@ -81,3 +81,37 @@ document.getElementById('deleteButton').addEventListener('click', function() {
         }, 5000);
     })
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetchUsers();
+});
+
+function fetchUsers() {
+    fetch('http://localhost:3000/users')
+    .then(response => response.json())
+    .then(data => {
+        const usersTable = document.getElementById('usersTable');
+        usersTable.innerHTML = '';
+
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+            </tr>
+        `;
+        usersTable.appendChild(thead);
+
+        data.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+            `;
+
+            usersTable.appendChild(tr);
+        });
+    });
+}

@@ -71,3 +71,17 @@ h1 {
 .notification.success {
     background-color: #4CAF50; /* Cor de fundo verde para sucesso */
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #f4f4f4;
+}
