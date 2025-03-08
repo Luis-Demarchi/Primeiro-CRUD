@@ -5,6 +5,10 @@ document.getElementById('singupForm').addEventListener('submit', function(event)
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
 
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const senhaInput = document.getElementById('senha');
+
     const data = { name, email, senha };
 
     fetch('http://localhost:3000/users', {
@@ -22,6 +26,9 @@ document.getElementById('singupForm').addEventListener('submit', function(event)
             notification.classList.add('success');
             notification.classList.remove('error');
             notification.textContent = data.message;
+            nameInput.value = '';
+            emailInput.value = '';
+            senhaInput.value = '';
             fetchUsers();
         } else {
             notification.classList.add('error');

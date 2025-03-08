@@ -117,3 +117,8 @@ th {
     font-size: 24px;
     cursor: pointer;
 }
+
+#editId {
+    background-color: #e1e0e0;
+    cursor: not-allowed;
+}
