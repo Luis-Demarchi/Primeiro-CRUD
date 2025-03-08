@@ -135,19 +135,27 @@ function deleteUser(id) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('editModal').style.display = 'none';
+});
+
 function editUser(id, name, email, senha) {
-    document.getElementById('editUserId').value = id;
+    document.getElementById('editId').value = id;
     document.getElementById('editName').value = name;
     document.getElementById('editEmail').value = email;
     document.getElementById('editSenha').value = senha;
 
-    document.getElementById('editFormContainer').style.display = 'block';
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
 }
 
 document.getElementById('editForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const id = document.getElementById('editUserId').value;
+    const id = document.getElementById('editId').value;
     const name = document.getElementById('editName').value;
     const email = document.getElementById('editEmail').value;
     const senha = document.getElementById('editSenha').value;
@@ -170,7 +178,7 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
             notification.classList.remove('error');
             notification.textContent = data.message;
             fetchUsers();
-            document.getElementById('editFormContainer').style.display = 'none';
+            document.getElementById('editModal').style.display = 'none';
         } else {
             notification.classList.add('error');
             notification.classList.remove('success');
@@ -186,7 +194,3 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
         console.error('Erro ao editar usuário:', error);
     });
 });
-
-function cancelEdit() {
-    document.getElementById('editFormContainer').style.display = 'none';
-}
