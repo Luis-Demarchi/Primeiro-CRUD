@@ -71,6 +71,13 @@ app.patch('/users/:id', async (req, res) => {
         }
 
         const userToUpdate = user[0];
+
+        if (email) {
+            const [existingUser] = await promisePool.execute('SELECT * FROM users WHERE email = ? AND id != ?', [email, id]);
+            if (existingUser.length > 0) {
+                return res.status(400).json({ status: 'erro', message: 'This email is alread in use'});
+        }
+
         const newUser = {
             id: userToUpdate.id,
             name: name || userToUpdate.name,
@@ -83,9 +90,9 @@ app.patch('/users/:id', async (req, res) => {
         return res.json({
             status: 'sucesso', message: 'User has been updated', data: newUser
         });
-
+        }
     } catch (error) {
-        console.error(error);
+        console.error("Erro no PATCH", error);
         res.status(500).json({ status:'erro', message: 'Erro ao atualizar usuário'});
     }
 });

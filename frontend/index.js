@@ -189,7 +189,7 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
         } else {
             notification.classList.add('error');
             notification.classList.remove('success');
-            notification.textContent = 'Erro ao editar usuário';
+            notification.textContent = data.message;
         }
 
         notification.classList.add('show');
